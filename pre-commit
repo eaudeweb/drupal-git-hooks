@@ -24,7 +24,7 @@ then
 	
 	state=$(ddev list -j | jq '.raw[0].status')
 	if [ "$state" = "\"running\"" ]; then
-		echo "${BLUE}ddev is running, starting gitleaks ...${RESET}"
+		echo "${BLUE}ddev is running, starting gitleaks scan, please wait ...${RESET}"
 		exec ddev gitleaks
 	else
 		echo "${ORANGE}ddev not running (status: $state). Skipping local gitleaks ...${RESET}"
