@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# pre-commit hook - called by "git commit" with no arguments.
+# The hook should exit with non-zero status to stop the 
+# commit.
+
+RED="\e[0;31m"
+GREEN="\e[0;32m"
+ORANGE="\e[0;33m"
+BLUE="\e[0;34m"
+RESET='\e[0m'
+
+echo "${BLUE}Trying local gitleaks ...${RESET}"
+if command -v ddev >/dev/null 2>&1
+then
+	echo "${BLUE}Found ddev command ...${RESET}"
+	if ! command -v jq >/dev/null 2>&1
+	then
+		echo "${RED}jq command is missing. Install with 'apt install jq' and retry ...${RESET}"
+		exit 1
+	else
+		echo "${BLUE}Found jq command ...${RESET}"
+	fi
+	
+	state=$(ddev list -j | jq '.raw[0].status')
+	if [ "$state" = "\"running\"" ]; then
+		echo "${BLUE}ddev is running, starting gitleaks ...${RESET}"
+		exec ddev gitleaks
+	else
+		echo "${ORANGE}ddev not running (status: $state). Skipping local gitleaks ...${RESET}"
+	fi
+else
+	echo "${ORANGE}ddev command not found, skipping local gitleaks ...${RESET}"
+fi
