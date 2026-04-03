@@ -1,0 +1,15 @@
+title = "EDW Gitleaks Configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore 3rd party files"
+paths = [
+    '''.ddev/.*''',
+    '''robo.yml''',
+    '''vendor/.*''',
+    '''web/core/.*''',
+    '''web/modules/contrib/.*''',
+    '''web/themes/contrib/.*''',
+]
