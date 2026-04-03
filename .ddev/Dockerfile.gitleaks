@@ -1,0 +1,20 @@
+# Install gitleaks for secret scanning
+# Docs: https://github.com/gitleaks/gitleaks
+
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+RUN set -eux; \
+    ARCH=$(dpkg --print-architecture); \
+    case "$ARCH" in \
+        amd64) GITLEAKS_ARCH='x64' ;; \
+        arm64) GITLEAKS_ARCH='arm64' ;; \
+        *) echo "Unsupported architecture: $ARCH" && exit 1 ;; \
+    esac; \
+    GITLEAKS_VERSION='8.30.0'; \
+    wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_${GITLEAKS_ARCH}.tar.gz" -O /tmp/gitleaks.tar.gz && \
+    tar -xzf /tmp/gitleaks.tar.gz -C /tmp && \
+    mv /tmp/gitleaks /usr/local/bin/gitleaks && \
+    chmod +x /usr/local/bin/gitleaks && \
+    rm -f /tmp/gitleaks.tar.gz && \
+    gitleaks version
