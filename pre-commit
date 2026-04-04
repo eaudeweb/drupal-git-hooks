@@ -22,7 +22,7 @@ then
 		echo "${BLUE}Found jq command ...${RESET}"
 	fi
 	
-	state=$(ddev list -j | jq '.raw[0].status')
+	state=$(ddev status -j | jq '.raw.services.web.status')
 	if [ "$state" = "\"running\"" ]; then
 		echo "${BLUE}DDEV is running ...${RESET}"
 		exec ddev gitleaks
