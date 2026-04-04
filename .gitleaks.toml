@@ -10,6 +10,7 @@ paths = [
     '''robo.yml''',
     '''vendor/.*''',
     '''web/core/.*''',
+    '''web/sites/default/files/.*''',
     '''web/modules/contrib/.*''',
     '''web/themes/contrib/.*''',
 ]
